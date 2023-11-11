@@ -21,35 +21,29 @@ public class UserService : IUserService
         return user != null ? user.Adapt<UserDto>() : null;
     }
 
-    public async Task<bool> AddUserAsync(UserDto userDto, CancellationToken ct)
+    public async Task<bool> AddUserAsync(User user, CancellationToken ct)
     {
-        // Create a new user
-        var newUser = userDto.Adapt<User>();
-
         // Add the user to the database
-        _dbContext.Users.Add(newUser);
+        _dbContext.Users.Add(user);
         await _dbContext.SaveChangesAsync(ct);
 
         return true; // User added successfully
     }
 
-    public async Task<bool> UpdateUserAsync(UserDto userDto, CancellationToken ct)
+    public async Task<bool> UpdateUserAsync(User user, CancellationToken ct)
     {
         // Retrieve the user from the database
-        var user = await _dbContext.Users.FindAsync(userDto.Id, ct);
+        var foundUser = await _dbContext.Users.FindAsync(user.Id, ct);
 
         // Check if the user exists
-        if (user == null)
+        if (foundUser == null)
         {
             return false; // User not found
         }
 
-        user.Adapt(userDto);
-
-        // Save changes to the database
+        _dbContext.Entry(user).State = EntityState.Modified;
         await _dbContext.SaveChangesAsync(ct);
-
-        return true; // User updated successfully
+        return true;
     }
 
     public async Task<bool> DeleteUserAsync(int userId, CancellationToken ct)
