@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
-using UsersWebApiDemo.WebApi.Users.UpdateUser;
 
-namespace UsersWebApiDemo.WebApi.Auth.Features.UpdateUser;
+namespace UsersWebApiDemo.WebApi.Users.UpdateUser;
 
 public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
 {
