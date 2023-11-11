@@ -58,6 +58,8 @@ public class ServiceError
     public static ServiceError UserNotFound => new ServiceError("User with this id does not exist", 996);
 
     public static ServiceError UserFailedToCreate => new ServiceError("Failed to create User.", 995);
+    public static ServiceError UserFailedToUpdate => new ServiceError("Failed to update User.", 993);
+    public static ServiceError UserFailedToDelete => new ServiceError("Failed to delete User.", 992);
 
     public static ServiceError Canceled => new ServiceError("The request canceled successfully!", 994);
 

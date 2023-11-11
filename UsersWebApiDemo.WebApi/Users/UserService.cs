@@ -41,7 +41,7 @@ public class UserService : IUserService
             return false; // User not found
         }
 
-        _dbContext.Entry(user).State = EntityState.Modified;
+        foundUser.Adapt(user);
         await _dbContext.SaveChangesAsync(ct);
         return true;
     }

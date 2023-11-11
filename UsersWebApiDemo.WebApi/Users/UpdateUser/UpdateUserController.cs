@@ -2,20 +2,20 @@
 using Swashbuckle.AspNetCore.Annotations;
 using UsersWebApiDemo.WebApi.Common.Service;
 
-namespace UsersWebApiDemo.WebApi.Users.AddUser;
+namespace UsersWebApiDemo.WebApi.Users.UpdateUser;
 
-public class AddUserController : UserControllerBase
+public class UpdateUserController : UserControllerBase
 {
     /// <summary>
-    /// Add user
+    /// Update user
     /// </summary>
     /// <param name="command"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    [HttpPost]
-    [Route("add-user")]
+    [HttpPut]
+    [Route("update-user")]
     [SwaggerOperation(Tags = new[] { nameof(User) })]
-    public async Task<ActionResult<ServiceResult<bool>>> AddUser(AddUserCommand command, CancellationToken ct)
+    public async Task<ActionResult<ServiceResult<bool>>> UpdateUser(UpdateUserCommand command, CancellationToken ct)
     {
         return Ok(await Mediator.Send(command, ct));
     }
