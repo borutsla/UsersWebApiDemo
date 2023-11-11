@@ -1,7 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
+using UsersWebApiDemo.WebApi.Auth.ApiKey;
+using UsersWebApiDemo.WebApi.Common.Behaviours;
 using UsersWebApiDemo.WebApi.Data;
+using UsersWebApiDemo.WebApi.Users;
 
 namespace UsersWebApiDemo.WebApi
 {
@@ -36,7 +41,14 @@ namespace UsersWebApiDemo.WebApi
                 c.CustomSchemaIds(x => x.FullName);                
             });
 
+            services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
+
+            // Behaviours
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+            services.AddTransient<IApiKeyService, ApiKeyService>();
+            services.AddTransient<IUserService, UserService>();
 
             services.AddHttpContextAccessor();
 
