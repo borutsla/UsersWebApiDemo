@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
-using UsersWebApiDemo.WebApi.Users.AddUser;
 
-namespace UsersWebApiDemo.WebApi.Auth.Features.Login;
+namespace UsersWebApiDemo.WebApi.Users.AddUser;
 
 public class AddUserCommandValidator : AbstractValidator<AddUserCommand>
 {
