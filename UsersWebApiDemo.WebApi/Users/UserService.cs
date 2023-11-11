@@ -41,7 +41,7 @@ public class UserService : IUserService
             return false; // User not found
         }
 
-        foundUser.Adapt(user);
+        user.Adapt(foundUser);
         await _dbContext.SaveChangesAsync(ct);
         return true;
     }
