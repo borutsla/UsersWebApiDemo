@@ -1,8 +1,10 @@
-﻿namespace UsersWebApiDemo.WebApi.Auth.ApiKey;
+﻿using System.Collections.Concurrent;
+
+namespace UsersWebApiDemo.WebApi.Auth.ApiKey;
 
 public class ApiKeyService : IApiKeyService
 {
-    public List<string> ValidApiKeys { get; set; }
+    public ConcurrentDictionary<string, string> ValidApiKeys { get; set; }
 
     public ApiKeyService()
     {
@@ -14,8 +16,8 @@ public class ApiKeyService : IApiKeyService
         // Generate a new API key
         var newGuid = Guid.NewGuid().ToString();
 
-        // Add API key
-        ValidApiKeys.Add(newGuid);
+        // Add or update the API key in the dictionary
+        ValidApiKeys.AddOrUpdate(userName, newGuid, (_, oldValue) => newGuid);
 
         return newGuid;
     }
@@ -24,6 +26,15 @@ public class ApiKeyService : IApiKeyService
     {
         if (apiKey == null) return false;
 
-        return ValidApiKeys.Contains(apiKey);
+        // Check if the API key exists in the dictionary
+        return ValidApiKeys.ContainsKey(apiKey);
+    }
+
+    public string? GetUsername(string? apiKey)
+    {
+        // Find the username associated with the given API key
+        var username = ValidApiKeys.FirstOrDefault(kv => kv.Value == apiKey).Key;
+
+        return username;
     }
 }

@@ -1,6 +1,12 @@
-﻿using UsersWebApiDemo.WebApi.Auth.ApiKey;
+﻿using Mapster;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+using UsersWebApiDemo.WebApi.Auth.ApiKey;
 using UsersWebApiDemo.WebApi.Common.Interfaces;
 using UsersWebApiDemo.WebApi.Common.Service;
+using UsersWebApiDemo.WebApi.Data.Models;
 using UsersWebApiDemo.WebApi.Users;
 
 namespace UsersWebApiDemo.WebApi.Auth.Features.Login;
@@ -16,7 +22,7 @@ public class LoginQueryHandler : IRequestHandlerWrapper<LoginQuery, LoginRespons
     private readonly IUserService _userService;
     private readonly IApiKeyService _apiKeyService;
 
-    public LoginQueryHandler(IUserService identityService, IApiKeyService apiKeyService)
+    public LoginQueryHandler(IUserService identityService, IApiKeyService apiKeyService, IHttpContextAccessor httpContextAccessor)
     {
         _userService = identityService;
         _apiKeyService = apiKeyService;
@@ -28,7 +34,6 @@ public class LoginQueryHandler : IRequestHandlerWrapper<LoginQuery, LoginRespons
 
         if (user == null)
             return ServiceResult.Failed<LoginResponse>(ServiceError.ForbiddenError);
-
 
         return ServiceResult.Success(new LoginResponse
         {

@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System.Text.Json.Serialization;
 using UsersWebApiDemo.WebApi.Auth.ApiKey;
 using UsersWebApiDemo.WebApi.Common.Behaviours;
@@ -71,9 +72,15 @@ namespace UsersWebApiDemo.WebApi
 
             //services            
             services.AddTransient<IUserService, UserService>();
-
+            
             services.AddSingleton<IApiKeyService, ApiKeyService>();
             services.AddSingleton<ApiKeyAuthorizationFilter>();
+
+            // Add Serilog as the logging provider
+            services.AddLogging(loggingBuilder =>
+            {
+                loggingBuilder.AddSerilog();
+            });
 
             services.AddHttpContextAccessor();
 

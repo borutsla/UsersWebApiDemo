@@ -1,4 +1,6 @@
-﻿namespace UsersWebApiDemo.WebApi;
+﻿using Serilog;
+
+namespace UsersWebApiDemo.WebApi;
 
 public static partial class EndpointMapper
 {
@@ -13,6 +15,9 @@ public static partial class EndpointMapper
                 options.SwaggerEndpoint("/swagger/v1.0/swagger.json", "Users Web API v1.0");
             });
         }
+
+        // Configure Serilog to capture HttpContext details
+        app.UseSerilogRequestLogging();
 
         app.UseHttpsRedirection();
         app.UseAuthentication();
