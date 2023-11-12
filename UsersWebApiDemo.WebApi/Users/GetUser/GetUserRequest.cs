@@ -1,4 +1,5 @@
-﻿using UsersWebApiDemo.WebApi.Common.Interfaces;
+﻿using UsersWebApiDemo.WebApi.Auth.ApiKey;
+using UsersWebApiDemo.WebApi.Common.Interfaces;
 using UsersWebApiDemo.WebApi.Common.Service;
 using UsersWebApiDemo.WebApi.Common.Users;
 

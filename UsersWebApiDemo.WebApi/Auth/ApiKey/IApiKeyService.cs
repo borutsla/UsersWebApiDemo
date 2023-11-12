@@ -2,5 +2,6 @@
 
 public interface IApiKeyService
 {
-    string GenerateApiKey(int userId);
+    string GenerateApiKey(string userName);
+    bool IsApiKeyValid(string? apiKey);
 }

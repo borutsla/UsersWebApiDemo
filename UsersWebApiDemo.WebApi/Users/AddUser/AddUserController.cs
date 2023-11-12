@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using UsersWebApiDemo.WebApi.Auth.ApiKey;
 using UsersWebApiDemo.WebApi.Common.Service;
 
 namespace UsersWebApiDemo.WebApi.Users.AddUser;
@@ -14,6 +15,7 @@ public class AddUserController : UserControllerBase
     /// <returns></returns>
     [HttpPost]
     [Route("add-user")]
+    [ApiKey]
     [SwaggerOperation(Tags = new[] { nameof(User) })]
     public async Task<ActionResult<ServiceResult<bool>>> AddUser(AddUserCommand command, CancellationToken ct)
     {

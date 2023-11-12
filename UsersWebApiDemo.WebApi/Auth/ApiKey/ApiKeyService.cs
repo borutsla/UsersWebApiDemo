@@ -1,6 +1,4 @@
-﻿using System.Collections.Concurrent;
-
-namespace UsersWebApiDemo.WebApi.Auth.ApiKey;
+﻿namespace UsersWebApiDemo.WebApi.Auth.ApiKey;
 
 public class ApiKeyService : IApiKeyService
 {
@@ -11,10 +9,21 @@ public class ApiKeyService : IApiKeyService
         ValidApiKeys = new();
     }
 
-    public string GenerateApiKey(int userId)
+    public string GenerateApiKey(string userName)
     {
+        // Generate a new API key
         var newGuid = Guid.NewGuid().ToString();
+
+        // Add API key
         ValidApiKeys.Add(newGuid);
+
         return newGuid;
+    }
+
+    public bool IsApiKeyValid(string? apiKey)
+    {
+        if (apiKey == null) return false;
+
+        return ValidApiKeys.Contains(apiKey);
     }
 }

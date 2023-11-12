@@ -33,7 +33,7 @@ public class LoginQueryHandler : IRequestHandlerWrapper<LoginQuery, LoginRespons
         return ServiceResult.Success(new LoginResponse
         {
             User = user,
-            ApiKey = _apiKeyService.GenerateApiKey(user.Id)
+            ApiKey = _apiKeyService.GenerateApiKey(user.UserName)
         });
     }
 

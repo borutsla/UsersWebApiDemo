@@ -38,17 +38,42 @@ namespace UsersWebApiDemo.WebApi
                 );
                 c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
                 c.UseInlineDefinitionsForEnums();
-                c.CustomSchemaIds(x => x.FullName);                
+                c.CustomSchemaIds(x => x.FullName);
+                c.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
+                {
+                    Description = "ApiKey must appear in header",
+                    Type = SecuritySchemeType.ApiKey,
+                    Name = "X-API-Key",
+                    In = ParameterLocation.Header,
+                    Scheme = "ApiKeyScheme"
+                });
+                var key = new OpenApiSecurityScheme()
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "ApiKey"
+                    },
+                    In = ParameterLocation.Header
+                };
+                var requirement = new OpenApiSecurityRequirement
+                    {
+                             { key, new List<string>() }
+                    };
+                c.AddSecurityRequirement(requirement);
             });
 
             services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
 
             // Behaviours
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));            
 
-            services.AddTransient<IApiKeyService, ApiKeyService>();
+            //services            
             services.AddTransient<IUserService, UserService>();
+
+            services.AddSingleton<IApiKeyService, ApiKeyService>();
+            services.AddSingleton<ApiKeyAuthorizationFilter>();
 
             services.AddHttpContextAccessor();
 
